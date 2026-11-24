@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>My Orders — REC Canteen | Rajalakshmi Engineering College</title>
+  <meta name="description" content="Track your REC Canteen food orders in real time. Show your digital token at the counter for pickup.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="brand-wrapper">
+        <a href="menu.html" class="header-cart-btn" aria-label="Back to Menu" style="font-size: 1.1rem; width: 36px; height: 36px;">
+          ←
+        </a>
+        <div class="brand-info">
+          <span class="brand-name">My Orders</span>
+          <span class="brand-subtitle">Live status & pickup tokens</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button onclick="loadMyOrders()" class="header-cart-btn" title="Refresh orders" style="font-size: 1rem;">
+          🔄
+        </button>
+      </div>
+    </header>
+
+    <!-- Active Order Live Pulse Banner (shown if any order is preparing/confirmed/pending) -->
+    <div id="activeOrderLiveBanner" style="display: none;"></div>
+
+    <!-- Orders Feed -->
+    <main class="orders-feed" id="ordersFeedContainer">
+      <!-- Loading Skeletons -->
+      <div class="skeleton" style="height: 140px; border-radius: 16px;"></div>
+      <div class="skeleton" style="height: 140px; border-radius: 16px;"></div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <a href="menu.html" class="nav-item">
+        <span class="nav-icon">🍽️</span>
+        <span>Menu</span>
+      </a>
+      <a href="cart.html" class="nav-item">
+        <span class="nav-icon">🛒</span>
+        <span>Cart</span>
+        <span class="nav-cart-badge" id="navCartBadge">0</span>
+      </a>
+      <a href="orders.html" class="nav-item active">
+        <span class="nav-icon">🧾</span>
+        <span>Orders</span>
+      </a>
+      <button onclick="logoutUser()" class="nav-item" style="color: #EF4444;">
+        <span class="nav-icon">🚪</span>
+        <span>Logout</span>
+      </button>
+    </nav>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/orders.js"></script>
+</body>
+</html>

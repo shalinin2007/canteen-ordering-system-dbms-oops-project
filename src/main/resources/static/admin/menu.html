@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Management — REC Canteen Admin | Rajalakshmi Engineering College</title>
+  <meta name="description" content="Add, edit, or remove REC Canteen dishes across all 8 outlets and manage real-time stock availability.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="admin-logo-icon">🍽️</div>
+        <div class="admin-logo-text">
+          <h3>REC Canteen</h3>
+          <span class="admin-badge-role">ADMIN PANEL</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="dashboard.html" class="sidebar-link">
+          <span class="link-icon">📊</span>
+          <span>Live Dashboard</span>
+        </a>
+        <a href="menu.html" class="sidebar-link active">
+          <span class="link-icon">🍔</span>
+          <span>Menu Manager</span>
+        </a>
+        <a href="../menu.html" class="sidebar-link" target="_blank">
+          <span class="link-icon">📱</span>
+          <span>Student View</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button onclick="logoutUser()" class="btn-admin-logout">
+          <span>🚪</span>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <!-- Admin Topbar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+            ☰
+          </button>
+          <h1 class="page-heading-title">Food Menu Manager</h1>
+        </div>
+
+        <div class="topbar-right">
+          <button onclick="openAddMenuItemModal()" class="btn-primary-admin">
+            <span>+</span> Add Food Item
+          </button>
+        </div>
+      </header>
+
+      <!-- Admin Body -->
+      <div class="admin-body">
+        <!-- Menu Items Table Card -->
+        <div class="table-card">
+          <div class="table-header-bar">
+            <h2 class="table-title">All Canteen Food Items</h2>
+            <div style="font-size: 0.85rem; color: var(--admin-text-muted);">
+              Total dishes: <strong id="adminMenuTotalCount" style="color: var(--admin-primary);">0</strong>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Food Item</th>
+                  <th>Category</th>
+                  <th>Dietary Type</th>
+                  <th>Price (₹)</th>
+                  <th>Prep Time</th>
+                  <th>Availability</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminMenuTbody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 36px; color: var(--admin-text-muted);">
+                    Loading menu items...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add / Edit Menu Item Modal -->
+  <div class="admin-modal-overlay" id="menuModalOverlay">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="menuModalTitle">Add New Food Item</h3>
+        <button class="admin-btn-close" onclick="closeMenuItemModal()">✕</button>
+      </div>
+
+      <form id="menuItemForm" onsubmit="handleMenuItemFormSubmit(event)">
+        <input type="hidden" id="itemEditId" value="">
+
+        <div class="admin-form-group">
+          <label class="admin-form-label" for="itemName">Food Item Name *</label>
+          <input type="text" id="itemName" class="admin-form-input" placeholder="e.g. Masala Dosa, Cold Coffee" required>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-form-label" for="itemDescription">Description</label>
+          <textarea id="itemDescription" class="admin-form-textarea" rows="2" placeholder="Crispy golden crepe served with sambar & chutneys"></textarea>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="itemPrice">Price (₹) *</label>
+            <input type="number" id="itemPrice" class="admin-form-input" placeholder="50.00" step="0.5" min="1" required>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="itemPrepTime">Prep Time (mins)</label>
+            <input type="number" id="itemPrepTime" class="admin-form-input" placeholder="10" min="1" value="10">
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="itemCategory">Category</label>
+            <select id="itemCategory" class="admin-form-select" required>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Beverages">Beverages</option>
+              <option value="Desserts">Desserts</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="itemType">Dietary Type *</label>
+            <select id="itemType" class="admin-form-select" required>
+              <option value="VEG">🟢 Veg</option>
+              <option value="NON_VEG">🔴 Non-Veg</option>
+              <option value="BEVERAGE">🔵 Beverage / Drink</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toggle-switch-wrapper">
+          <input type="checkbox" id="itemAvailable" class="toggle-checkbox" checked>
+          <label for="itemAvailable" style="font-size: 0.88rem; font-weight: 700; cursor: pointer;">
+            Available in Kitchen (Uncheck if Sold Out)
+          </label>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn-action-delete" onclick="closeMenuItemModal()" style="padding: 10px 16px;">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary-admin" id="btnSaveItem">
+            Save Item ➔
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initMenuPage();
+    });
+  </script>
+</body>
+</html>

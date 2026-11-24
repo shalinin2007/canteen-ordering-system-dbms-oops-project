@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — REC Canteen | Rajalakshmi Engineering College</title>
+  <meta name="description" content="REC Canteen admin panel. Monitor student orders, update kitchen status, and manage the menu.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="admin-logo-icon">🍽️</div>
+        <div class="admin-logo-text">
+          <h3>REC Canteen</h3>
+          <span class="admin-badge-role">ADMIN PANEL</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="dashboard.html" class="sidebar-link active">
+          <span class="link-icon">📊</span>
+          <span>Live Dashboard</span>
+        </a>
+        <a href="menu.html" class="sidebar-link">
+          <span class="link-icon">🍔</span>
+          <span>Menu Manager</span>
+        </a>
+        <a href="../menu.html" class="sidebar-link" target="_blank">
+          <span class="link-icon">📱</span>
+          <span>Student View</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button onclick="logoutUser()" class="btn-admin-logout">
+          <span>🚪</span>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <!-- Admin Topbar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="btn-sidebar-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+            ☰
+          </button>
+          <h1 class="page-heading-title">Live Kitchen Dashboard</h1>
+        </div>
+
+        <div class="topbar-right">
+          <div class="live-refresh-badge">
+            <div class="live-dot"></div>
+            <span>Auto-sync 20s</span>
+          </div>
+          <button onclick="loadAdminDashboardData()" class="btn-primary-admin" style="padding: 6px 12px; font-size: 0.8rem;">
+            🔄 Refresh
+          </button>
+        </div>
+      </header>
+
+      <!-- Admin Body -->
+      <div class="admin-body">
+        <!-- 4 Stat Cards Grid -->
+        <div class="stat-cards-grid">
+          <div class="stat-card">
+            <div class="stat-info-col">
+              <span class="stat-title">Today's Orders</span>
+              <span class="stat-value" id="statTodayOrders">0</span>
+            </div>
+            <div class="stat-icon-wrapper orders">🛍️</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-info-col">
+              <span class="stat-title">Today's Revenue</span>
+              <span class="stat-value" id="statTodayRevenue">₹0.00</span>
+            </div>
+            <div class="stat-icon-wrapper revenue">💰</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-info-col">
+              <span class="stat-title">Pending Orders</span>
+              <span class="stat-value" id="statPendingOrders" style="color: #F59E0B;">0</span>
+            </div>
+            <div class="stat-icon-wrapper pending">⏳</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-info-col">
+              <span class="stat-title">Total Menu Items</span>
+              <span class="stat-value" id="statTotalItems">0</span>
+            </div>
+            <div class="stat-icon-wrapper menu">🍽️</div>
+          </div>
+        </div>
+
+        <!-- Live Orders Table Card -->
+        <div class="table-card">
+          <div class="table-header-bar">
+            <h2 class="table-title">Live Incoming Orders</h2>
+            <div style="font-size: 0.85rem; color: var(--admin-text-muted);">
+              Total active: <strong id="adminOrderCount" style="color: var(--admin-primary);">0</strong>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order / Token</th>
+                  <th>Student Info</th>
+                  <th>Items Ordered</th>
+                  <th>Total (₹)</th>
+                  <th>Current Status</th>
+                  <th>Update Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersTbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; padding: 36px; color: var(--admin-text-muted);">
+                    Loading live orders from canteen kitchen...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboardPage();
+    });
+  </script>
+</body>
+</html>

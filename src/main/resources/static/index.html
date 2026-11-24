@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>REC Canteen — Rajalakshmi Engineering College</title>
+  <meta name="description" content="Order food from REC Café, Hut Café, Juice Corner, Spice Corner, WokOn and more — skip the queue with live pickup tokens.">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Specific Auth Layout Adjustments */
+    .auth-toggle-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .auth-toggle-note button {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: underline;
+      margin-left: 4px;
+    }
+    .form-panel {
+      display: none;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .form-panel.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <div class="auth-card">
+    <!-- Header with animated Food Logo -->
+    <div class="auth-header">
+      <div class="auth-logo-badge" id="authLogo">🍽️</div>
+      <h1 class="auth-title">REC Canteen</h1>
+      <p class="auth-subtitle">Rajalakshmi Engineering College</p>
+      <p style="font-size:0.78rem;color:var(--text-subtle);margin-top:4px;">Skip the queue — order from REC Café, Hut Café, WokOn & more</p>
+    </div>
+
+    <!-- Switchable Tabs -->
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-panel active" id="loginPanel">
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">College Email</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="student@campus.edu" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="loginBtn">
+          <span>Sign In to Canteen</span> ➔
+        </button>
+      </form>
+
+      <div class="auth-toggle-note">
+        Don't have an account? 
+        <button type="button" onclick="switchAuthTab('register')">Create one</button>
+      </div>
+    </div>
+
+    <!-- Register Form -->
+    <div class="form-panel" id="registerPanel">
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label class="form-label" for="regName">Full Name</label>
+          <input type="text" id="regName" class="form-input" placeholder="Alex Morgan" required>
+        </div>
+
+        <div class="auth-form-row">
+          <div class="form-group">
+            <label class="form-label" for="regEmail">College Email</label>
+            <input type="email" id="regEmail" class="form-input" placeholder="rollno@rec.edu.in" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPhone">Phone Number</label>
+            <input type="tel" id="regPhone" class="form-input" placeholder="9876543210" required pattern="[0-9]{10}">
+          </div>
+        </div>
+
+        <div class="auth-form-row">
+          <div class="form-group">
+            <label class="form-label" for="regCollegeId">Student / Roll ID</label>
+            <input type="text" id="regCollegeId" class="form-input" placeholder="e.g. 22CSE001" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regBranch">Branch / Dept</label>
+            <input type="text" id="regBranch" class="form-input" placeholder="CSE / ECE" required>
+          </div>
+        </div>
+
+        <div class="auth-form-row">
+          <div class="form-group">
+            <label class="form-label" for="regYear">Academic Year</label>
+            <select id="regYear" class="form-input" required>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3" selected>3rd Year</option>
+              <option value="4">4th Year</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Password</label>
+            <input type="password" id="regPassword" class="form-input" placeholder="Min 6 characters" minlength="6" required autocomplete="new-password">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="registerBtn">
+          <span>Create Student Account</span> ➔
+        </button>
+      </form>
+
+      <div class="auth-toggle-note">
+        Already registered? 
+        <button type="button" onclick="switchAuthTab('login')">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Tab Switching logic
+    function switchAuthTab(tab) {
+      const loginTab = document.getElementById('tabLogin');
+      const regTab = document.getElementById('tabRegister');
+      const loginPanel = document.getElementById('loginPanel');
+      const regPanel = document.getElementById('registerPanel');
+      const logo = document.getElementById('authLogo');
+
+      if (tab === 'login') {
+        loginTab.classList.add('active');
+        regTab.classList.remove('active');
+        loginPanel.classList.add('active');
+        regPanel.classList.remove('active');
+        logo.textContent = '🍽️';
+      } else {
+        regTab.classList.add('active');
+        loginTab.classList.remove('active');
+        regPanel.classList.add('active');
+        loginPanel.classList.remove('active');
+        logo.textContent = '🍕';
+      }
+    }
+
+    // Handle Login
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn = document.getElementById('loginBtn');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>Signing in...</span> ⏳';
+
+      try {
+        const response = await apiCall('/api/auth/login', 'POST', { email, password });
+        showToast('Welcome to REC Canteen! 🍽️', 'success');
+
+        // Check user info from response or /api/auth/me
+        let user = response;
+        if (!user || !user.role) {
+          user = await apiCall('/api/auth/me');
+        }
+
+        if (user) {
+          sessionStorage.setItem('canteen_user', JSON.stringify(user));
+        }
+
+        const destination = (user && user.dashboardUrl) ? user.dashboardUrl : 
+          ((user && user.role === 'ADMIN') ? '/admin/dashboard.html' : '/menu.html');
+
+        setTimeout(() => {
+          window.location.href = destination;
+        }, 800);
+      } catch (err) {
+        showToast(err.message || 'Login failed. Please check your credentials.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Sign In to Canteen</span> ➔';
+      }
+    }
+
+    // Handle Register
+    async function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const collegeId = document.getElementById('regCollegeId').value.trim();
+      const branch = document.getElementById('regBranch').value.trim();
+      const year = parseInt(document.getElementById('regYear').value, 10);
+      const password = document.getElementById('regPassword').value;
+      const btn = document.getElementById('registerBtn');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>Creating Account...</span> ⏳';
+
+      try {
+        const payload = { name, email, password, phone, collegeId, branch, year };
+        await apiCall('/api/auth/register', 'POST', payload);
+        showToast('Account created successfully! Signing in...', 'success');
+
+        // Attempt immediate login
+        try {
+          const loginRes = await apiCall('/api/auth/login', 'POST', { email, password });
+          let user = loginRes;
+          if (!user || !user.role) {
+            user = await apiCall('/api/auth/me');
+          }
+          if (user) {
+            sessionStorage.setItem('canteen_user', JSON.stringify(user));
+          }
+          const destination = (user && user.dashboardUrl) ? user.dashboardUrl : '/menu.html';
+          setTimeout(() => {
+            window.location.href = destination;
+          }, 900);
+        } catch (lErr) {
+          switchAuthTab('login');
+          document.getElementById('loginEmail').value = email;
+          btn.disabled = false;
+          btn.innerHTML = '<span>Create Student Account</span> ➔';
+        }
+      } catch (err) {
+        showToast(err.message || 'Registration failed. Please check your details.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Create Student Account</span> ➔';
+      }
+    }
+
+    // Check if user is already logged in, redirect them
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const user = await apiCall('/api/auth/me');
+        if (user && (user.userId || user.id)) {
+          const dest = user.dashboardUrl || (user.role === 'ADMIN' ? '/admin/dashboard.html' : '/menu.html');
+          window.location.href = dest;
+        }
+      } catch (e) {
+        // Not logged in, stay on login page
+      }
+    });
+  </script>
+</body>
+</html>

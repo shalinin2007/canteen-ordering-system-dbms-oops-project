@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Menu — REC Canteen | Rajalakshmi Engineering College</title>
+  <meta name="description" content="Browse food from REC Café, Hut Café, Juice Corner, Spice Corner, WokOn, Sugarcane Corner, REC Mart & 6 Sense Garden. Order ahead, skip the queue!">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sticky Top Header -->
+    <header class="site-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon">🍽️</div>
+        <div class="brand-info">
+          <span class="brand-name">REC Canteen</span>
+          <span class="brand-subtitle">Hi, <strong id="user-display-name">Student</strong> 👋</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="cart.html" class="header-cart-btn" aria-label="View Shopping Cart">
+          <span>🛒</span>
+          <span class="cart-badge-count" id="headerCartBadge">0</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Greeting Banner -->
+    <section class="greeting-section">
+      <div class="greeting-card">
+        <div class="greeting-text">
+          <h2>Hungry at REC? 🎓</h2>
+          <p>Order from 8 canteen outlets — skip the queue with live pickup tokens!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Input Bar -->
+    <div class="search-bar-wrapper">
+      <div class="search-input-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="menuSearchInput" class="search-input" placeholder="Search dosa, biryani, bovonto, kurkure..." oninput="handleMenuSearch()">
+      </div>
+    </div>
+
+    <!-- Category Filter Pills — Real REC Canteen Outlets -->
+    <div class="categories-wrapper">
+      <div class="category-scroll" id="categoryPillList">
+        <button class="cat-pill active" data-category="ALL" onclick="selectCategory('ALL', this)">
+          <span>✨</span> All
+        </button>
+        <button class="cat-pill" data-category="REC Café" onclick="selectCategory('REC Café', this)">
+          <span>🍛</span> REC Café
+        </button>
+        <button class="cat-pill" data-category="Hut Café" onclick="selectCategory('Hut Café', this)">
+          <span>🌿</span> Hut Café
+        </button>
+        <button class="cat-pill" data-category="Juice Corner" onclick="selectCategory('Juice Corner', this)">
+          <span>🧃</span> Juice Corner
+        </button>
+        <button class="cat-pill" data-category="Spice Corner" onclick="selectCategory('Spice Corner', this)">
+          <span>🌶️</span> Spice Corner
+        </button>
+        <button class="cat-pill" data-category="WokOn" onclick="selectCategory('WokOn', this)">
+          <span>🥢</span> WokOn
+        </button>
+        <button class="cat-pill" data-category="Sugarcane Corner" onclick="selectCategory('Sugarcane Corner', this)">
+          <span>🌾</span> Sugarcane
+        </button>
+        <button class="cat-pill" data-category="REC Mart" onclick="selectCategory('REC Mart', this)">
+          <span>🛒</span> REC Mart
+        </button>
+        <button class="cat-pill" data-category="6 Sense Garden" onclick="selectCategory('6 Sense Garden', this)">
+          <span>🌳</span> 6 Sense
+        </button>
+      </div>
+    </div>
+
+    <!-- Dietary Filter Toggle & Item Count -->
+    <div class="diet-filter-bar">
+      <div class="diet-toggle-group">
+        <button class="diet-btn active" id="filterAll" onclick="setDietaryFilter('ALL')">All</button>
+        <button class="diet-btn veg" id="filterVeg" onclick="setDietaryFilter('VEG')">🟢 Veg</button>
+        <button class="diet-btn non-veg" id="filterNonVeg" onclick="setDietaryFilter('NON_VEG')">🔴 Non-Veg</button>
+        <button class="diet-btn" id="filterBev" onclick="setDietaryFilter('BEVERAGE')" style="border-color:#4facfe;color:#4facfe;">🥤 Drinks</button>
+      </div>
+      <span class="item-count-label" id="menuItemCount">Loading menu...</span>
+    </div>
+
+    <!-- Food Item Cards Grid -->
+    <main class="food-grid" id="foodGridContainer">
+      <!-- Loading Skeletons -->
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </main>
+
+    <!-- Bottom Navigation Bar (Mobile First) -->
+    <nav class="bottom-nav">
+      <a href="menu.html" class="nav-item active">
+        <span class="nav-icon">🍽️</span>
+        <span>Menu</span>
+      </a>
+      <a href="cart.html" class="nav-item">
+        <span class="nav-icon">🛒</span>
+        <span>Cart</span>
+        <span class="nav-cart-badge" id="navCartBadge">0</span>
+      </a>
+      <a href="orders.html" class="nav-item">
+        <span class="nav-icon">🧾</span>
+        <span>Orders</span>
+      </a>
+      <button onclick="logoutUser()" class="nav-item" style="color: #EF4444;">
+        <span class="nav-icon">🚪</span>
+        <span>Logout</span>
+      </button>
+    </nav>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>
